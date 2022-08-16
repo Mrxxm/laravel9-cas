@@ -109,8 +109,8 @@ class SSOController extends Controller
 
         $cookie = $this->delCookie(self::COOKIE_USER_TICKET);
 
-        $user_id = Redis::get(self::REDIS_USER_TOKEN . ':' . $user_ticket);
-        Redis::expire(self::REDIS_USER_TOKEN . ':' . $user_ticket, 0);
+        $user_id = Redis::get(self::REDIS_USER_TICKET . ':' . $user_ticket);
+        Redis::expire(self::REDIS_USER_TICKET . ':' . $user_ticket, 0);
 
         Redis::expire(self::REDIS_USER_TOKEN . ':' . $user_id, 0);
 
