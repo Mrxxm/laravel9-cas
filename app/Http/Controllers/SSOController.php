@@ -167,7 +167,6 @@ class SSOController extends Controller
     protected function setCookie(string $key, string $value, Response $response)
     {
         return \cookie($key, $value, 60, '/', 'laravel-cas.com', true, false, false, 'none');
-//        setcookie($key, $value, time() + 3600, '/', 'laravel-cas.com', true, false);
     }
 
     protected function delCookie(string $key)
