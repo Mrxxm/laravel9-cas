@@ -80,7 +80,7 @@ class SSOController extends Controller
         if (md5($request->get('tmpTicket')) != $tmp_ticket_value) {
             return response()->json('用户票据异常2');
         } else {
-            Redis::expire(self::REDIS_TMP_TICKET . ':' . $request->get('tmpTicket'), -1);
+            Redis::expire(self::REDIS_TMP_TICKET . ':' . $request->get('tmpTicket'), 0);
         }
 
         $user_ticket = $this->getCookie($request, self::COOKIE_USER_TICKET);
@@ -110,9 +110,9 @@ class SSOController extends Controller
         $cookie = $this->delCookie(self::COOKIE_USER_TICKET);
 
         $user_id = Redis::get(self::REDIS_USER_TOKEN . ':' . $user_ticket);
-        Redis::expire(self::REDIS_USER_TOKEN . ':' . $user_ticket, -1);
+        Redis::expire(self::REDIS_USER_TOKEN . ':' . $user_ticket, 0);
 
-        Redis::expire(self::REDIS_USER_TOKEN . ':' . $user_id, '-1');
+        Redis::expire(self::REDIS_USER_TOKEN . ':' . $user_id, 0);
 
         return response()->json('ok')->withCookie($cookie);
     }
