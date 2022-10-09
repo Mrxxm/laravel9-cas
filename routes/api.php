@@ -18,4 +18,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::any('/token/create', function (Request $request) {
+    $user = \App\Models\User::find(1);
+
+    $user->tokens()->delete();
+
+    $token = $user->createToken($user->name);
+
+    return ['token' => $token->plainTextToken];
+});
+
 
