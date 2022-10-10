@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware(['auth:sanctum', 'permission-check'])->get('/user', function (Request $request) {
     return $request->user();
-});
+})->name('api/user');
 
 Route::any('/token/create', function (Request $request) {
     $user = \App\Models\User::find(1);
@@ -27,5 +27,6 @@ Route::any('/token/create', function (Request $request) {
 
     return ['token' => $token->plainTextToken];
 });
+
 
 
