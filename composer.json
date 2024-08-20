@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "ext-gd": "*",
         "dompdf/dompdf": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "hptown-hms/permission-check": "dev-dev-v1.0",
@@ -74,7 +75,7 @@
         },
         "hptown-hms/permission-check": {
             "type": "vcs",
-            "url": "ssh://git@gitlab.dev.hptown.cn:19022/php-packagist/hptown-hms/permission-check.git"
+            "url": ""
         }
     }
 }
