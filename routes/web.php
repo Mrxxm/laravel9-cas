@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\SSOController;
-use App\Http\Controllers\WordToPdfController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SSOController;
+use App\Http\Controllers\HtmlToPdfController;
+use App\Http\Controllers\WordToPdfController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +30,10 @@ Route::any('/verifyTmpTicket', [SSOController::class, 'verifyTmpTicket']);
 Route::any('/logout', [SSOController::class, 'logout']);
 
 // word转pdf
-Route::any('/convert_to_pdf', [WordToPdfController::class, 'convertToPdf']);
+Route::any('/convert_word_to_pdf', [WordToPdfController::class, 'convertToPdf']);
+
+// HTML转pdf
+Route::any('/convert_html_to_pdf', [HtmlToPdfController::class, 'convertToPdf']);
+
+// zip打包
+Route::any('/convert_zip', [HtmlToPdfController::class, 'convertToZip']);
