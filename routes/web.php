@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SSOController;
+use App\Http\Controllers\WordToPdfController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,3 +27,6 @@ Route::any('/doLogin', [SSOController::class, 'doLogin']);
 Route::any('/verifyTmpTicket', [SSOController::class, 'verifyTmpTicket']);
 
 Route::any('/logout', [SSOController::class, 'logout']);
+
+// word转pdf
+Route::any('/convert_to_pdf', [WordToPdfController::class, 'convertToPdf']);
