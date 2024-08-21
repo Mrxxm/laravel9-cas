@@ -35,5 +35,9 @@ Route::any('/convert_word_to_pdf', [WordToPdfController::class, 'convertToPdf'])
 // HTML转pdf
 Route::any('/convert_html_to_pdf', [HtmlToPdfController::class, 'convertToPdf']);
 
+//Route::any('/convert_html_to_pdf', function () {
+//    phpinfo();
+//});
+
 // zip打包
 Route::any('/convert_zip', [HtmlToPdfController::class, 'convertToZip']);
