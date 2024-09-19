@@ -2,39 +2,64 @@
 
 namespace App\Http\Controllers;
 
-use PhpOffice\PhpWord\Settings;
-use PhpOffice\PhpWord\IOFactory;
-use PhpOffice\PhpWord\Style\Font;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpWord\TemplateProcessor;
 
 class WordToPdfController
 {
-    public function convertToPdf()
+    public function convertWordToPdf()
     {
-        // 更改字体设置
-//        $fontStyle = new Font();
-//        $fontStyle->setName('Calibri');
-//        $fontStyle->setSize(10);
-//        $fontStyle->setColor('000000');
+        // 1.获取本地word模版
+        $wordPath = 'public/服务协议副本' . '.docx';
+        $wordContent = Storage::disk('local')->get($wordPath);
+        $wordPath = Storage::disk('local')->path($wordPath);
 
-        // 设置缓存路径，这个路径必须存在且可写
-        Settings::setPdfRendererPath(base_path('vendor/tecnickcom/tcpdf'));
-        Settings::setPdfRendererName('TCPDF');
-//        Settings::setOutputEscapingEnabled(false);
-//        Settings::setOutputEscapingEnabled(true);
-//        Settings::setDefaultFontName('Calibri');
+        // 2.准备word模板中替换内容
+        $data = [
+            'JName' => '杭州碎肉公司',
+            'YName' => '杭州拌面公司',
+            'Area'  => '浙江省杭州市滨江区',
+            'JDatetime' => date('Y-m-d H:i:s', time()),
+            'YDatetime' => date('Y-m-d H:i:s', time()),
+            'nullLine'  => '',
+        ];
 
-        // 读取Word文档
-        $phpWord = IOFactory::load(public_path('1.8.8服务凭证补充需求文档211025.docx'));
-//        $phpWord = IOFactory::load(storage_path('app/public/平方.docx'));
+        // 3.保存word文件生成路径
+        $defaultPath = 'word';
+        Storage::disk('local')->makeDirectory($defaultPath);
+        $wordSavePath = $defaultPath . '/'. Str::uuid()->toString() . '.docx';
+        $wordLocalPath = Storage::disk('local')->path($wordSavePath);
+        Storage::disk('local')->put($wordSavePath, $wordContent);
+
+        // 4.替换内容
+        $processor = new TemplateProcessor($wordLocalPath);
+        $processor->setValues($data);
+
+        // 生成行
+        $processor->cloneRow('line', 3);
+        for ($i = 0; $i < 3; $i++) {
+
+            $processor->setValue('line#' . $i + 1, $i + 1);
+            $processor->setValue('dName#' . $i + 1, '名称'. $i);
+            $processor->setValue('dArea#' . $i + 1, '区域'. $i);
+        }
+
+        $processor->saveAs($wordLocalPath);
+
+        // 5.word转pdf
+        $pdfName      = date('Y-m-d') . '协议.pdf';
+        $pdfLocalPath = Storage::disk('local')->path($defaultPath) .'/'. $pdfName;
+
+        // word->pdf
+        $command = "unoconv -f pdf -o {$pdfLocalPath} {$wordLocalPath}";
+
+        // Execute the command
+        exec($command, $output, $return_var);
+//        $unoconv = Unoconv::create(config('services.unoconv'));
+//        $unoconv->transcode($wordLocalPath, 'pdf', $pdfLocalPath);
 
 
-        // 将Word文档转换为PDF并保存到文件中
-        $pdfWriter = IOFactory::createWriter($phpWord, 'PDF');
-        $pdfWriter->setFont('simli');
-        $font = $pdfWriter->getFont();
-//        dd($font);
-        $pdfWriter->save(storage_path('app/public/平方.pdf'));
-
-        return response()->download(storage_path('app/public/平方.pdf'));
+        return response()->json('success');
     }
 }

@@ -30,7 +30,7 @@ Route::any('/verifyTmpTicket', [SSOController::class, 'verifyTmpTicket']);
 Route::any('/logout', [SSOController::class, 'logout']);
 
 // word转pdf
-Route::any('/convert_word_to_pdf', [WordToPdfController::class, 'convertToPdf']);
+Route::any('/convert_word_to_pdf', [WordToPdfController::class, 'convertWordToPdf']);
 
 // HTML转pdf
 Route::any('/convert_html_to_pdf', [HtmlToPdfController::class, 'convertToPdf']);

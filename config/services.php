@@ -31,4 +31,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'unoconv' => [
+        'timeout'          => 60,
+        'unoconv.binaries' => env('UNOCONV_BIN_DIR', '/usr/local/Cellar/unoconv/0.9.0_3/bin/unoconv'),
+    ],
 ];
