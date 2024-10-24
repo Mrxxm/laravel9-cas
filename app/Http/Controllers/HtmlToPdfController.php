@@ -23,7 +23,7 @@ class HtmlToPdfController
         // 1.实例化Mpdf对象
         $mpdf = new Mpdf([
             'mode'             => 'utf-8',
-            'format'           => 'A4',
+//            'format'           => 'A4',
             'useSubstitutions' => true,
             'useAdobeCJK'      => true,
             'autoScriptToLang' => true,
@@ -59,7 +59,42 @@ class HtmlToPdfController
         // 4.渲染html文件
         $mpdf->WriteHTML(view('pdf', $data)->render());
 
-        // 5.输出pdf文件
+        // 5.添加电子签章
+//        $dianzi = Storage::disk('local')->path('pdf_watermarks/dianzi.jpg');
+//        $mpdf->Image($dianzi, 89, 190);
+
+        // 6.生成不同大小页面
+//        // 第一页：A4 纵向
+//        $mpdf->WriteHTML('<h1>Page 1: A4 Portrait</h1>');
+//
+//        // 添加第二页：A5 横向
+//        $mpdf->AddPage('L',
+//           '',
+//             '',
+//            '',
+//             '',
+//            '',
+//            '',
+//            '',
+//             '',
+//             '',
+//            '',
+//            '',
+//             '',
+//             '',
+//             '',
+//             0,
+//             0,
+//             0,
+//             0,
+//            '', 'A5');  // 'L' 表示横向，'A5' 是纸张大小
+//        $mpdf->WriteHTML('<h1>Page 2: A5 Landscape</h1>');
+
+        // 添加第三页：自定义纸张大小（210mm x 148mm，纵向）
+//        $mpdf->AddPage('P', [210, 148]);  // 自定义纸张尺寸 (宽 x 高)
+//        $mpdf->WriteHTML('<h1>Page 3: Custom Size (210mm x 148mm)</h1>');
+
+        // 7.输出pdf文件
         Storage::makeDirectory('output');
         $localPath = storage_path('app/output');
 
