@@ -102,7 +102,7 @@ class HtmlToPdfController
 
         $mpdf->Output($localPath . '/'. $output_file_name, 'F');
 
-        return response()->json('success');
+        return response()->json(['data' => 'success', 'name' => $output_file_name]);
     }
 
     /**
@@ -202,5 +202,142 @@ class HtmlToPdfController
         $mpdf->Output($localPath . '/'. $output_file_name, 'F');
 
         return ['path' => $localPath . '/'. $output_file_name, 'name' => $output_file_name];
+    }
+
+    /**
+     * html转pdf
+     *
+     * @return JsonResponse
+     *
+     * @throws \Mpdf\MpdfException
+     */
+    public function convertToPdfCustomer(): JsonResponse
+    {
+        // 1.实例化Mpdf对象
+        $mpdf = new Mpdf([
+            'mode'             => 'utf-8',
+            'format'           => 'A4',
+            'useSubstitutions' => true,
+            'useAdobeCJK'      => true,
+            'autoScriptToLang' => true,
+            'autoLangToFont'   => true,
+            'simpleTables'     => false, // 转pdf表格单元格边框消失
+            'mgl'              => 15,
+            'mgr'              => 15,
+            'mgt'              => 16,
+            'mgb'              => 16,
+            'mgh'              => 9,
+            'mgf'              => 9,
+            'orientation'      => 'P'
+        ]);
+
+        // 6.质检单
+        $mpdf->AddPage('',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            0,
+            0,
+            0,
+            0,
+            '', 'A4');  // 'L' 表示横向，'A5' 是纸张大小
+        // 第一页：A4 纵向
+        $mpdf->WriteHTML('<h2 style="text-align: center">质检单-1 </h2>');
+
+        // 添加电子签章
+        $dianzi = Storage::disk('local')->path('pdf_watermarks/dianzi1.png');
+        $mpdf->Image($dianzi, 145, 230);
+
+        // 添加第二页：A5 横向
+        $mpdf->AddPage('L',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            0,
+            0,
+            0,
+            0,
+            '', 'A5');  // 'L' 表示横向，'A5' 是纸张大小
+        $mpdf->WriteHTML('<h2 style="text-align: center">浙江亚太药业股份有限公司发货单(随货同行单)运输单-2</h2>');
+
+        $mpdf->AddPage('L',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            0,
+            0,
+            0,
+            0,
+            '', 'A5');  // 'L' 表示横向，'A5' 是纸张大小
+
+        // 添加电子签章
+        $dianzi = Storage::disk('local')->path('pdf_watermarks/dianzi2.png');
+        $mpdf->Image($dianzi, 72, 5);
+        $mpdf->WriteHTML('<h2 style="text-align: center">电子发票(增值税专用发票)-3 </h2>');
+
+        $mpdf->AddPage('L',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            0,
+            0,
+            0,
+            0,
+            '', 'A5');  // 'L' 表示横向，'A5' 是纸张大小
+        $mpdf->WriteHTML('<h2 style="text-align: center">浙江长典医药有限公司销售清单-4</h2>');
+
+        // 7.输出pdf文件
+        Storage::makeDirectory('output');
+        $localPath = storage_path('app/output');
+
+        $output_file_name = 'pdf_' . time() . '.pdf';
+
+        $mpdf->Output($localPath . '/'. $output_file_name, 'F');
+
+        return response()->json(['data' => 'success', 'name' => $output_file_name]);
     }
 }
