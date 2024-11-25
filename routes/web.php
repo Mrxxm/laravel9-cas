@@ -35,9 +35,19 @@ Route::any('/convert_word_to_pdf', [WordToPdfController::class, 'convertWordToPd
 // HTML转pdf
 Route::any('/convert_html_to_pdf', [HtmlToPdfController::class, 'convertToPdf']);
 
+Route::any('/convert_html_to_pdf_customer', [HtmlToPdfController::class, 'convertToPdfCustomer']);
+
 //Route::any('/convert_html_to_pdf', function () {
 //    phpinfo();
 //});
 
 // zip打包
 Route::any('/convert_zip', [HtmlToPdfController::class, 'convertToZip']);
+
+// 打印机
+Route::any('/printer_list', [\App\Http\Controllers\PrinterController::class, 'list']);
+
+Route::any('/printer_queue', [\App\Http\Controllers\PrinterController::class, 'queue']);
+
+Route::any('/printer_print', [\App\Http\Controllers\PrinterController::class, 'print']);
+
