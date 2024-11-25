@@ -44,6 +44,10 @@ Route::any('/convert_html_to_pdf_customer', [HtmlToPdfController::class, 'conver
 // zip打包
 Route::any('/convert_zip', [HtmlToPdfController::class, 'convertToZip']);
 
+// PDF文件操作
+Route::any('/convert_add_word_to_pdf', [\App\Http\Controllers\PDFController::class, 'add']);
+
+
 // 打印机
 Route::any('/printer_list', [\App\Http\Controllers\PrinterController::class, 'list']);
 
