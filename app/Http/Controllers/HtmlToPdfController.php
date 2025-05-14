@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use Milon\Barcode\DNS1D;
 use Mpdf\Mpdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpWord\Shared\ZipArchive;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class HtmlToPdfController
 {
@@ -339,5 +342,37 @@ class HtmlToPdfController
         $mpdf->Output($localPath . '/'. $output_file_name, 'F');
 
         return response()->json(['data' => 'success', 'name' => $output_file_name]);
+    }
+
+    public function convertToPic(Request $request)
+    {
+//        header('Content-Type: image/png'); // 输出 PNG 图像
+
+//        $pdfPath = 'https://inv.jss.com.cn/fp2/wYBGU-9isJUXudiPwu41AQtSKDzX2KZdTDoBjUxGGVjat-sVvf1PC3rztiSY2IbnRjbOvPHE0YRKiDH2xBrZTg.pdf'; // PDF 路径
+//        $page = 0; // 页码（从 0 开始）
+//
+//        $imagick = new Imagick();
+//        $imagick->setResolution(150, 150); // 设置渲染分辨率（DPI）
+//        $imagick->readImage($pdfPath . "[$page]"); // 只读取第 N 页
+//        $imagick->setImageFormat('png'); // 设置输出格式
+//
+//        $imagick->clear();
+//        $imagick->destroy();
+
+        $str = "14^151^20220630151406^73254320-B2BE-4327-9ABD-C36CDA51D564^01^|1^11611^2204251^20240331^27.76^400.00^80^20189177";
+
+        $qrcode = QrCode::size(85)->generate($str);
+
+        $barcode = new DNS1D();
+
+        // 生成 SVG 格式的 Code128 条形码
+        $code = 'HZ317094';
+        $type = 'C128';       // 条形码类型，如 Code128
+        $scale = 1.8;           // 缩放比例，影响宽度
+        $height = 33;         // 高度
+
+        $svg = $barcode->getBarcodeSVG($code, $type, $scale, $height);
+
+        return $svg;
     }
 }

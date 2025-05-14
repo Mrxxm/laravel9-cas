@@ -13,8 +13,11 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
+        "milon/barcode": "^11.0",
         "mpdf/mpdf": "^8.1",
         "phpoffice/phpword": "^1.0",
+        "setasign/fpdi-tcpdf": "^2.3",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "tecnickcom/tcpdf": "^6.6"
     },
     "require-dev": {
@@ -23,8 +26,7 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.5.10",
-        "spatie/laravel-ignition": "^1.0"
+        "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {
         "psr-4": {
@@ -75,7 +77,7 @@
         },
         "hptown-hms/permission-check": {
             "type": "vcs",
-            "url": ""
+            "url": "ssh://git@gitlab.dev.hptown.cn:19022/php-packagist/hptown-hms/permission-check.git"
         }
     }
 }
